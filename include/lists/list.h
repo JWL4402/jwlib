@@ -13,5 +13,6 @@ struct node
 List list_s(char**);
 void list_append(List, void*);
 void list_pushback(List, void*);
+void* list_get(List, int);
 
 #endif // LIST_H

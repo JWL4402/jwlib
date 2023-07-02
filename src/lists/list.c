@@ -26,3 +26,16 @@ List list_s(char** strings) {
     return HEAD;
 
 }
+
+void* list_get(List HEAD, int index) {
+    Node* cur_node = HEAD;
+    for (int i = 0; i < index; i++) {
+        Node* next_node = cur_node->next;
+
+        if (next_node == 0) { return 0; }
+
+        cur_node = next_node;
+    }
+
+    return cur_node->data;
+}
