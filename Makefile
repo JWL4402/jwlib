@@ -19,14 +19,19 @@ LIB_DIR=$(BUILD)\$(LIB_NAME)
 LIB=$(LIB_DIR)\lib$(LIB_NAME).a
 
 
-build: $(LIB)
+build: $(LIB) #test
 
 clean:
 	$(RM) $(BUILD) $(OBJ)
 # Deletes all compiled files.
 
-test:
+test: test.o $(LIB)
+	gcc -o test $^
+	./test
 # TODO, when tests are implemented
+
+test.o: tests/test_list.c
+	gcc -c $< -o $@
 
 
 $(LIB): $(LIB_DIR) $(INCLUDE) $(OBJ) $(OBJECTS)
