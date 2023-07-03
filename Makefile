@@ -1,17 +1,24 @@
 # This Makefile requires Unix. If using on Windows, run in a Git BASH terminal.
 
+# Flags and commands
 CC:=gcc
 CFLAGS:=-Wall -Wextra -pedantic
 RM:=rm -r
 
+# Directories
 SRC:=src
 OBJ:=obj
 INCLUDE:=include
+TEST:=tests
 
+# Files
 SOURCES:=$(wildcard $(SRC)/*.c $(SRC)/*/*.c)
 OBJECTS:=$(patsubst $(SRC)/%.c,$(OBJ)/%.o,$(SOURCES))
 OBJDIRS:=$(dir $(OBJECTS))
 HEADERS:=$(wildcard $(INCLUDE)/*.h $(INCLUDE)/*/*.h)
+TESTS:=$(wildcard $(TEST)/*.c $(TEST)/*/*.c)
+TESTEXE:=$(patsubst %.c,%.exe,$(TESTS))
+#TESTDIRS:=(dir $(TESTS)) unnecessary, all dirs already exist
 
 BUILD:=lib
 LIB_NAME=jwlib
@@ -19,19 +26,12 @@ LIB_DIR=$(BUILD)\$(LIB_NAME)
 LIB=$(LIB_DIR)\lib$(LIB_NAME).a
 
 
-build: $(LIB) #test
+build: $(LIB)
+test: $(TEST)
 
 clean:
-	$(RM) $(BUILD) $(OBJ)
+	$(RM) $(BUILD) $(OBJ) $(TESTEXE)
 # Deletes all compiled files.
-
-test: test.o $(LIB)
-	gcc -o test $^
-	./test
-# TODO, when tests are implemented
-
-test.o: tests/test_list.c
-	gcc -c $< -o $@
 
 
 $(LIB): $(LIB_DIR) $(INCLUDE) $(OBJ) $(OBJECTS)
@@ -58,3 +58,13 @@ $(OBJDIRS):
 $(OBJ)/%.o: $(SRC)/%.c 
 	$(CC) $(CFLAGS) -c $< -o $@
 # Compiles the .c files in SRC to .o files in OBJ
+
+
+$(TEST): $(LIB) $(TESTEXE)
+	mkdir -p $@
+# Makes the test directory if it doesn't already exist
+
+$(TEST)/%.exe: $(TEST)/%.c
+	$(CC) $(CFLAGS) $< $(LIB) -o $@
+	$@
+# Compiles and executes all test files.
