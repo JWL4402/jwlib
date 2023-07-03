@@ -76,3 +76,14 @@ void* list_get(List HEAD, int index) {
 
     return node->data;
 }
+
+void list_destroy(List HEAD) {
+    Node* cur_node = HEAD;
+
+    while (cur_node != 0) {
+        Node* next_node = cur_node->next;
+        cur_node->next = 0; // necessary?
+        free(cur_node);
+        cur_node = next_node;
+    }
+}

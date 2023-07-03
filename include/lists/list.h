@@ -10,13 +10,13 @@ struct node
     Node* next;
 };
 
-List list_s(char**);
+List list_s(char*[]);
 List list_i(int*);                  // TODO
 List list_d(double*);               // TODO
 void list_append(List, void*);      
 void list_pushback(List, void*);    // TODO
 Node* list_at(List, int);
 void* list_get(List, int);
-void list_destroy(List);            // TODO
+void list_destroy(List);
 
 #endif // LIST_H
