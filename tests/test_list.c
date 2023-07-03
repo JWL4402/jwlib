@@ -23,11 +23,13 @@ static void test_list_s() {
 
     list_destroy(list);
 
-    puts("test_list_s() : PASS\n");
+    puts("\ttest_list_s() : PASS");
 }
 
 int main() {
+    puts("Test suite: test_list.c");
     test_list_s();
+
 
     return 0;
 }
