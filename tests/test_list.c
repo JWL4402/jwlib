@@ -11,9 +11,15 @@ static void test_list_s() {
     };
     List list = list_s(strings);
 
-    Node* node = list;
+    assert("Count is accurate" &&
+        list.count == 5);
+
+    assert("Type is accurate" &&
+        strcmp(list.type, "string") == 0);
+
+    Node* node = list.HEAD;
     for (int i = 0; i < 5; i++) {
-        assert("Initializing variables" &&
+        assert("Variables are properly initialized" &&
             strcmp(node->data, *(strings + i)) == 0);
         node = node->next;
     }
@@ -29,7 +35,6 @@ static void test_list_s() {
 int main() {
     puts("Test suite: test_list.c");
     test_list_s();
-
 
     return 0;
 }

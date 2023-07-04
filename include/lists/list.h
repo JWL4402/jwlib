@@ -2,12 +2,19 @@
 #define LIST_H
 
 typedef struct node Node;
-typedef Node * List;
+typedef struct list List;
 
 struct node
 {
     void* data;
     Node* next;
+};
+
+struct list
+{
+    Node* HEAD;
+    int count;
+    char* type;
 };
 
 List list_s(char*[]);

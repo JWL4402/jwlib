@@ -5,34 +5,37 @@
 
 List list_s(char** strings) {
     // strings should be terminated with a 0
-    Node* HEAD = 0;
+    List list = {
+        .HEAD = 0,
+        .count = 0,
+        .type = "string"
+    };
 
     Node* last_node;
-
-    int iter = 0;
-    while (*(strings + iter) != 0) {
+    while (*(strings + list.count) != 0) {
         Node* cur_node = (Node*) malloc(sizeof(Node));
-        if (cur_node == 0) { return 0; } // ?
+        if (cur_node == 0) { 
+            return list;
+        }
         
-        cur_node->data = *(strings + iter);
+        cur_node->data = *(strings + list.count);
         cur_node->next = 0;
         
-        if (HEAD == 0) {
-            HEAD = cur_node;
+        if (list.count == 0) {
+            list.HEAD = cur_node;
         } else {
             last_node->next = cur_node;
         }
         
         last_node = cur_node;
-        iter++;
+        list.count++;
     }
 
-    return HEAD;
-
+    return list;
 }
 
-void list_append(List HEAD, void* data) {
-    List cur_node = HEAD;
+void list_append(List list, void* data) {
+    Node* cur_node = list.HEAD;
 
     while (cur_node->next != 0) {
         cur_node = cur_node->next;
@@ -52,14 +55,12 @@ OR
 
 */
 
-Node* list_at(List HEAD, int index) {
-    Node* cur_node = HEAD;
+Node* list_at(List list, int index) {
+    Node* cur_node = list.HEAD;
     for (int i = 0; i < index; i++) {
         Node* next_node = cur_node->next;
 
         if (next_node == 0) {
-            // fprintf(stderr, "Index %d is out of bounds.\n", index);
-            // TODO : Should there be an error print here? or is returning NULL pointer sufficient
             return 0;
         }
 
@@ -69,16 +70,16 @@ Node* list_at(List HEAD, int index) {
     return cur_node;
 }
 
-void* list_get(List HEAD, int index) {
-    Node* node = list_at(HEAD, index);
+void* list_get(List list, int index) {
+    Node* node = list_at(list, index);
 
     if (node == 0) { return 0; }
 
     return node->data;
 }
 
-void list_destroy(List HEAD) {
-    Node* cur_node = HEAD;
+void list_destroy(List list) {
+    Node* cur_node = list.HEAD;
 
     while (cur_node != 0) {
         Node* next_node = cur_node->next;
