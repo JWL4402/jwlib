@@ -6,6 +6,8 @@
 #include "../include/lists/list.h"
 
 static void test_list_s() {
+// todo { 0 }
+    
     char* strings[] = {
         "Apple", "Banana", "Cherry", "Durian", "Eggplant", 0
     };
@@ -72,11 +74,58 @@ static void test_list_get() {
     puts("\ttest_list_get() : PASS");
 }
 
+static void test_list_append() {
+    char* strings1[] = {
+        "Apple", "Banana", "Cherry", "Durian", "Eggplant", 0
+    };
+    List list_init = list_s(strings1);
+
+    char* strings2[] = {
+        "Apple", "Banana", "Cherry", 0
+    };
+    List list_appended_partial = list_s(strings2);
+    list_append(list_appended_partial, (void*) "Durian");
+    list_append(list_appended_partial, (void*) "Eggplant");
+
+    char* strings3[] = {
+        0
+    };
+    List list_appended = list_s(strings3);
+    list_append(list_appended, (void*) "Apple");
+    list_append(list_appended, (void*) "Banana");
+    list_append(list_appended, (void*) "Cherry");
+    list_append(list_appended, (void*) "Durian");
+    list_append(list_appended, (void*) "Eggplant");
+
+    assert("List using append has same length as initialized list" &&
+        list_init.count == list_appended.count &&
+        list_init.count == list_appended_partial.count);
+
+    assert("List using append has same type as initialized test" &&
+        strcmp(list_init.type, list_appended.type) == 0 &&
+        strcmp(list_init.type, list_appended_partial.type) == 0);
+
+    for (int i = 0; i < list_init.count; i++) {
+        void* list_data = list_get(list_init, i);
+        void* list_appended_data = list_get(list_appended, i);
+        void* list_appended_partial_data = list_get(list_appended_partial, i);
+        assert("All methods produce identical lists" &&
+            list_data == list_appended_data &&
+            list_data == list_appended_partial_data);
+    }
+
+    list_destroy(list_init);
+    list_destroy(list_appended_partial);
+
+    puts("\ttest_list_append() : PASS");
+}
+
 int main() {
     puts("Test suite: test_list.c");
     test_list_s();
     test_list_at();
     test_list_get();
+    test_list_append();
 
     return 0;
 }

@@ -39,7 +39,7 @@ void list_append(List list, void* data) {
 
     while (cur_node->next != 0) {
         cur_node = cur_node->next;
-    };
+    }; // if true, have to make the head = new node after malloc
 
     Node* new_node = (Node*) malloc(sizeof(Node));
     new_node->data = data;
