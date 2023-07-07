@@ -35,15 +35,24 @@ List list_s(char** strings) {
 }
 
 void list_append(List list, void* data) {
+    Node* new_node = (Node*) malloc(sizeof(Node));
+    if (new_node == 0) { return; }
+    new_node->data = data;
+    new_node->next = 0;
+
+    list.count++;
+    printf("%d", list.count);
+
+    if (list.HEAD == 0) {
+        list.HEAD = new_node;
+        return;
+    }
+
     Node* cur_node = list.HEAD;
 
     while (cur_node->next != 0) {
         cur_node = cur_node->next;
     }; // if true, have to make the head = new node after malloc
-
-    Node* new_node = (Node*) malloc(sizeof(Node));
-    new_node->data = data;
-    new_node->next = 0;
 
     cur_node->next = new_node;
 }

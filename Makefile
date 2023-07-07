@@ -64,7 +64,7 @@ $(TEST): $(LIB) $(TESTEXE)
 	mkdir -p $@
 # Makes the test directory if it doesn't already exist
 
-$(TEST)/%.exe: $(TEST)/%.c
+$(TEST)/%.exe: $(TEST)/%.c $(LIB)
 	$(CC) $(CFLAGS) $< $(LIB) -o $@
 	$@
 # Compiles and executes all test files.

@@ -6,8 +6,15 @@
 #include "../include/lists/list.h"
 
 static void test_list_s() {
+    char* empty[] = {
+        0
+    };
+
+    List empty_list = list_s(empty);
+
+    list_destroy(empty_list);
+
 // todo { 0 }
-    
     char* strings[] = {
         "Apple", "Banana", "Cherry", "Durian", "Eggplant", 0
     };
@@ -96,6 +103,8 @@ static void test_list_append() {
     list_append(list_appended, (void*) "Cherry");
     list_append(list_appended, (void*) "Durian");
     list_append(list_appended, (void*) "Eggplant");
+
+    printf("%d %d %d", list_init.count, list_appended.count, list_appended_partial.count);
 
     assert("List using append has same length as initialized list" &&
         list_init.count == list_appended.count &&
