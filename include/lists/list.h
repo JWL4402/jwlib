@@ -20,8 +20,9 @@ struct list
 List list_s(char*[]);
 List list_i(int*);                  // TODO
 List list_d(double*);               // TODO
-void list_append(List, void*);      
-void list_pushback(List, void*);    // TODO
+void list_append(List, void*);    
+void list_insert(List, int, void*); // TODO  
+void list_pushback(List, void*);
 Node* list_at(List, int);
 void* list_get(List, int);
 void list_destroy(List);

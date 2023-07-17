@@ -57,12 +57,17 @@ void list_append(List list, void* data) {
     cur_node->next = new_node;
 }
 
-/*
-NEXT QUESTION :
-SHOULD FUNCTION RETURN A SUCESS CODE, and modify a pointer,
-OR
+void list_pushback(List list, void* data) {
+    Node* head = list->HEAD;
 
-*/
+    Node* new_node = (Node*) malloc(sizeof(Node));
+    if (new_node == 0) { return; }
+    new_node->data = data;
+    new_node->next = head;
+
+    list->HEAD = new_node;
+    list->count++;
+}
 
 Node* list_at(List list, int index) {
     Node* cur_node = list->HEAD;

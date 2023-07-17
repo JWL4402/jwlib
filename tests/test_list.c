@@ -21,7 +21,6 @@ static void test_list_s() {
 
     list_destroy(empty_list);
 
-// todo { 0 }
     char* strings[] = {
         "Apple", "Banana", "Cherry", "Durian", "Eggplant", 0
     };
@@ -89,6 +88,7 @@ static void test_list_get() {
 }
 
 static void test_list_append() {
+    /* SETUP */
     char* strings1[] = {
         "Apple", "Banana", "Cherry", "Durian", "Eggplant", 0
     };
@@ -111,6 +111,7 @@ static void test_list_append() {
     list_append(list_appended, (void*) "Durian");
     list_append(list_appended, (void*) "Eggplant");
 
+    /* TESTING */
     assert("List using append has same length as initialized list" &&
         list_init->count == list_appended->count &&
         list_init->count == list_appended_partial->count);
@@ -128,10 +129,62 @@ static void test_list_append() {
             list_data == list_appended_partial_data);
     }
 
+    /* TEARDOWN */
     list_destroy(list_init);
     list_destroy(list_appended_partial);
+    list_destroy(list_appended);
 
     puts("\ttest_list_append() : PASS");
+}
+
+static void test_list_pushback() {
+    /* SETUP */
+    char* init_string[] = { // TODO char* [] works but not char**??
+        "Apple", "Banana", "Cherry", "Durian", "Eggplant", 0
+    };
+    List init_list = list_s(init_string);
+
+    char* partial_string[] = {
+        "Cherry", "Durian", "Eggplant", 0
+    };
+    List partial_list = list_s(partial_string);
+    list_pushback(partial_list, (void*) "Banana");
+    list_pushback(partial_list, (void*) "Apple");
+
+    char* pushback_string[] = {
+        0
+    };
+    List pushback_list = list_s(pushback_string);
+    list_pushback(pushback_list, (void*) "Eggplant");
+    list_pushback(pushback_list, (void*) "Durian");
+    list_pushback(pushback_list, (void*) "Cherry");
+    list_pushback(pushback_list, (void*) "Banana");
+    list_pushback(pushback_list, (void*) "Apple");
+
+    /* TESTING */
+    assert("List using pushback has same length as initialized list" &&
+        init_list->count == partial_list->count &&
+        init_list->count == pushback_list->count);
+
+    assert("List using pushback has same type as initialized list" &&
+        strcmp(init_list->type, partial_list->type) == 0 &&
+        strcmp(init_list->type, pushback_list->type) == 0);
+
+    for (int i = 0; i < init_list->count; i++) {
+        void* init_data = list_get(init_list, i);
+        void* partial_data = list_get(partial_list, i);
+        void* pushback_data = list_get(pushback_list, i);
+        assert("All methods produce identical lists" &&
+            init_data == partial_data &&
+            init_data == pushback_data);
+    } // TODO : should probably test by value not reference?
+
+    /* TEARDOWN */
+    list_destroy(init_list);
+    list_destroy(partial_list);
+    list_destroy(pushback_list);
+
+    puts("\ttest_list_pushback() : PASS");
 }
 
 int main() {
@@ -140,6 +193,7 @@ int main() {
     test_list_at();
     test_list_get();
     test_list_append();
+    test_list_pushback();
     puts("test_list.c : PASS");
 
     return 0;
