@@ -3,15 +3,21 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
-#include "../include/lists/list.h"
+#include "../../include/lists/list.h"
 
 static void test_list_s() {
+    /* SETUP */
     char* empty[] = {
         0
     };
-
     List empty_list = list_s(empty);
 
+    char* strings[] = {
+        "Apple", "Banana", "Cherry", "Durian", "Eggplant", 0
+    };
+    List list = list_s(strings);
+
+    /* TESTING */
     assert("Empty list HEAD points to NULL" &&
         empty_list->HEAD == 0);
     assert("Empty list count is 0" &&
@@ -19,16 +25,9 @@ static void test_list_s() {
     assert("Empty list initialized via list_s is of type string" &&
         strcmp(empty_list->type, "string") == 0);
 
-    list_destroy(empty_list);
-
-    char* strings[] = {
-        "Apple", "Banana", "Cherry", "Durian", "Eggplant", 0
-    };
-    List list = list_s(strings);
 
     assert("Count is accurate" &&
         list->count == 5);
-
     assert("Type is accurate" &&
         strcmp(list->type, "string") == 0);
 
@@ -42,12 +41,15 @@ static void test_list_s() {
     assert("Last element points to NULL" &&
         node == 0); // since we did node->next 5 times, and there is 5 elements, already at the end
 
+    /* TEARDOWN */
+    list_destroy(empty_list);
     list_destroy(list);
 
     puts("\ttest_list_s() : PASS");
 }
 
 static void test_list_at() {
+    /* SETUP */
     char* strings[] = {
         "Apple", "Banana", "Cherry", "Durian", "Eggplant", 0
     };
@@ -55,6 +57,7 @@ static void test_list_at() {
 
     Node* cur_node = list->HEAD;
 
+    /* TESTING */
     for (int i = 0; i < list->count; i++) {
         Node* node_at = list_at(list, i);
         assert("list_at() is an accurate shorthand for iterating through a list" &&
@@ -64,17 +67,20 @@ static void test_list_at() {
         cur_node = cur_node->next;
     }
 
+    /* TEARDOWN */
     list_destroy(list);
 
     puts("\ttest_list_at() : PASS");
 }
 
 static void test_list_get() {
+    /* SETUP */
     char* strings[] = {
         "Apple", "Banana", "Cherry", "Durian", "Eggplant", 0
     };
     List list = list_s(strings);
 
+    /* TESTING */
     for (int i = 0; i < list->count; i++) {
         Node* node_at = list_at(list, i);
         void* data_get = list_get(list, i);
@@ -82,6 +88,7 @@ static void test_list_get() {
             node_at->data == data_get);
     }
 
+    /* TEARDOWN */
     list_destroy(list);
 
     puts("\ttest_list_get() : PASS");
@@ -89,50 +96,50 @@ static void test_list_get() {
 
 static void test_list_append() {
     /* SETUP */
-    char* strings1[] = {
+    char* init_strings[] = {
         "Apple", "Banana", "Cherry", "Durian", "Eggplant", 0
     };
-    List list_init = list_s(strings1);
+    List init_list = list_s(init_strings);
 
-    char* strings2[] = {
+    char* partial_strings[] = {
         "Apple", "Banana", "Cherry", 0
     };
-    List list_appended_partial = list_s(strings2);
-    list_append(list_appended_partial, (void*) "Durian");
-    list_append(list_appended_partial, (void*) "Eggplant");
+    List partial_list = list_s(partial_strings);
+    list_append(partial_list, (void*) "Durian");
+    list_append(partial_list, (void*) "Eggplant");
 
-    char* strings3[] = {
+    char* appended_strings[] = {
         0
     };
-    List list_appended = list_s(strings3);
-    list_append(list_appended, (void*) "Apple");
-    list_append(list_appended, (void*) "Banana");
-    list_append(list_appended, (void*) "Cherry");
-    list_append(list_appended, (void*) "Durian");
-    list_append(list_appended, (void*) "Eggplant");
+    List appended_list = list_s(appended_strings);
+    list_append(appended_list, (void*) "Apple");
+    list_append(appended_list, (void*) "Banana");
+    list_append(appended_list, (void*) "Cherry");
+    list_append(appended_list, (void*) "Durian");
+    list_append(appended_list, (void*) "Eggplant");
 
     /* TESTING */
     assert("List using append has same length as initialized list" &&
-        list_init->count == list_appended->count &&
-        list_init->count == list_appended_partial->count);
+        init_list->count == appended_list->count &&
+        init_list->count == partial_list->count);
 
     assert("List using append has same type as initialized test" &&
-        strcmp(list_init->type, list_appended->type) == 0 &&
-        strcmp(list_init->type, list_appended_partial->type) == 0);
+        strcmp(init_list->type, appended_list->type) == 0 &&
+        strcmp(init_list->type, partial_list->type) == 0);
 
-    for (int i = 0; i < list_init->count; i++) {
-        void* list_data = list_get(list_init, i);
-        void* list_appended_data = list_get(list_appended, i);
-        void* list_appended_partial_data = list_get(list_appended_partial, i);
+    for (int i = 0; i < init_list->count; i++) {
+        void* list_data = list_get(init_list, i);
+        void* list_appended_data = list_get(appended_list, i);
+        void* list_appended_partial_data = list_get(partial_list, i);
         assert("All methods produce identical lists" &&
             list_data == list_appended_data &&
             list_data == list_appended_partial_data);
     }
 
     /* TEARDOWN */
-    list_destroy(list_init);
-    list_destroy(list_appended_partial);
-    list_destroy(list_appended);
+    list_destroy(init_list);
+    list_destroy(partial_list);
+    list_destroy(appended_list);
 
     puts("\ttest_list_append() : PASS");
 }
