@@ -42,7 +42,6 @@ void list_append(List list, void* data) {
     new_node->next = 0;
 
     list->count++;
-    printf("%d", list->count);
 
     if (list->HEAD == 0) {
         list->HEAD = new_node;

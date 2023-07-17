@@ -111,8 +111,6 @@ static void test_list_append() {
     list_append(list_appended, (void*) "Durian");
     list_append(list_appended, (void*) "Eggplant");
 
-    printf("%d %d %d", list_init->count, list_appended->count, list_appended_partial->count);
-
     assert("List using append has same length as initialized list" &&
         list_init->count == list_appended->count &&
         list_init->count == list_appended_partial->count);
@@ -142,6 +140,7 @@ int main() {
     test_list_at();
     test_list_get();
     test_list_append();
+    puts("test_list.c : PASS");
 
     return 0;
 }
