@@ -2,7 +2,7 @@
 
 # Flags and commands
 CC:=gcc
-CFLAGS:=-Wall -Wextra -pedantic
+CFLAGS:=-W -Wall -Wextra -pedantic -pass-exit-codes
 RM:=rm -r
 
 # Directories
@@ -65,6 +65,8 @@ $(TEST): $(LIB) $(TESTEXE)
 # Makes the test directory if it doesn't already exist
 
 $(TEST)/%.exe: $(TEST)/%.c $(LIB)
-	$(CC) $(CFLAGS) $< $(LIB) -o $@
+	$(CC) $(CFLAGS) $^ -o $@
 	$@
 # Compiles and executes all test files.
+
+.PHONY: clean
