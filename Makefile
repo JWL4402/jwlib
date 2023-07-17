@@ -22,8 +22,8 @@ TESTEXE:=$(patsubst %.c,%.exe,$(TESTS))
 
 BUILD:=lib
 LIB_NAME=jwlib
-LIB_DIR=$(BUILD)\$(LIB_NAME)
-LIB=$(LIB_DIR)\lib$(LIB_NAME).a
+LIB_DIR=$(BUILD)/$(LIB_NAME)
+LIB=$(LIB_DIR)/lib$(LIB_NAME).a
 
 
 build: $(LIB)
