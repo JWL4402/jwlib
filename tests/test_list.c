@@ -12,6 +12,13 @@ static void test_list_s() {
 
     List empty_list = list_s(empty);
 
+    assert("Empty list HEAD points to NULL" &&
+        empty_list->HEAD == 0);
+    assert("Empty list count is 0" &&
+        empty_list->count == 0);
+    assert("Empty list initialized via list_s is of type string" &&
+        strcmp(empty_list->type, "string") == 0);
+
     list_destroy(empty_list);
 
 // todo { 0 }
@@ -21,13 +28,13 @@ static void test_list_s() {
     List list = list_s(strings);
 
     assert("Count is accurate" &&
-        list.count == 5);
+        list->count == 5);
 
     assert("Type is accurate" &&
-        strcmp(list.type, "string") == 0);
+        strcmp(list->type, "string") == 0);
 
-    Node* node = list.HEAD;
-    for (int i = 0; i < list.count; i++) {
+    Node* node = list->HEAD;
+    for (int i = 0; i < list->count; i++) {
         assert("Variables are properly initialized" &&
             strcmp(node->data, *(strings + i)) == 0);
         node = node->next;
@@ -47,9 +54,9 @@ static void test_list_at() {
     };
     List list = list_s(strings);
 
-    Node* cur_node = list.HEAD;
+    Node* cur_node = list->HEAD;
 
-    for (int i = 0; i < list.count; i++) {
+    for (int i = 0; i < list->count; i++) {
         Node* node_at = list_at(list, i);
         assert("list_at() is an accurate shorthand for iterating through a list" &&
             cur_node->next == node_at->next &&
@@ -69,7 +76,7 @@ static void test_list_get() {
     };
     List list = list_s(strings);
 
-    for (int i = 0; i < list.count; i++) {
+    for (int i = 0; i < list->count; i++) {
         Node* node_at = list_at(list, i);
         void* data_get = list_get(list, i);
         assert("list_get() corresponds to the data at the specified index" &&
@@ -104,17 +111,17 @@ static void test_list_append() {
     list_append(list_appended, (void*) "Durian");
     list_append(list_appended, (void*) "Eggplant");
 
-    printf("%d %d %d", list_init.count, list_appended.count, list_appended_partial.count);
+    printf("%d %d %d", list_init->count, list_appended->count, list_appended_partial->count);
 
     assert("List using append has same length as initialized list" &&
-        list_init.count == list_appended.count &&
-        list_init.count == list_appended_partial.count);
+        list_init->count == list_appended->count &&
+        list_init->count == list_appended_partial->count);
 
     assert("List using append has same type as initialized test" &&
-        strcmp(list_init.type, list_appended.type) == 0 &&
-        strcmp(list_init.type, list_appended_partial.type) == 0);
+        strcmp(list_init->type, list_appended->type) == 0 &&
+        strcmp(list_init->type, list_appended_partial->type) == 0);
 
-    for (int i = 0; i < list_init.count; i++) {
+    for (int i = 0; i < list_init->count; i++) {
         void* list_data = list_get(list_init, i);
         void* list_appended_data = list_get(list_appended, i);
         void* list_appended_partial_data = list_get(list_appended_partial, i);
